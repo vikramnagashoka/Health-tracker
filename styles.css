@@ -1,0 +1,402 @@
+:root {
+  color-scheme: light;
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --primary: #2a5bff;
+  --primary-light: #dbe5ff;
+  --text: #0f172a;
+  --muted: #475569;
+  --border: #e2e8f0;
+  --warning: #b45309;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+h1, h2, h3, h4 {
+  margin-top: 0;
+}
+
+a {
+  color: var(--primary);
+}
+
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 1px 6px rgba(15, 23, 42, 0.08);
+}
+
+.header-text h1 {
+  font-size: 1.2rem;
+  margin-bottom: 0.25rem;
+}
+
+.header-text p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.progress-display {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-weight: 600;
+}
+
+.progress-label {
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+main {
+  padding: 1.5rem 1rem 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+section {
+  background: var(--surface);
+  border-radius: 1rem;
+  padding: 1.25rem;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+}
+
+section h2 {
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+}
+
+.banner {
+  margin: 0.5rem 1rem 0;
+  background: #fee2e2;
+  color: #b91c1c;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  font-size: 0.9rem;
+  border: 1px solid #fecaca;
+}
+
+.reminder-cards, .overdue-cards {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.reminder-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.reminder-card.overdue {
+  border-color: #f97316;
+  background: #fff7ed;
+}
+
+.reminder-card .time {
+  font-weight: 600;
+}
+
+.reminder-card .label {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.accordion details {
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  padding: 0.75rem;
+  background: #f9fbff;
+  margin-bottom: 0.75rem;
+}
+
+.accordion summary {
+  font-weight: 600;
+  cursor: pointer;
+  outline: none;
+}
+
+.field-grid {
+  display: grid;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.field-grid label {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.field-grid textarea,
+.field-grid input,
+.field-grid select {
+  width: 100%;
+  padding: 0.6rem 0.75rem;
+  border-radius: 0.6rem;
+  border: 1px solid var(--border);
+  font: inherit;
+  background: var(--surface);
+}
+
+.field-grid textarea {
+  resize: vertical;
+}
+
+.chip-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.chip {
+  border: none;
+  border-radius: 999px;
+  background: var(--primary-light);
+  color: var(--primary);
+  padding: 0.35rem 0.75rem;
+  font: inherit;
+  cursor: pointer;
+}
+
+.chip:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.warning {
+  padding: 0.6rem 0.75rem;
+  border-radius: 0.6rem;
+  border: 1px solid #f97316;
+  background: #fff7ed;
+  color: #9a3412;
+  font-size: 0.85rem;
+}
+
+.supplements {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.supplement-item {
+  display: grid;
+  gap: 0.25rem;
+  border-radius: 0.75rem;
+  padding: 0.75rem;
+  background: #eef2ff;
+}
+
+.supplement-item label {
+  font-weight: 600;
+}
+
+.supplement-item input[type="checkbox"] {
+  margin-right: 0.5rem;
+}
+
+.time-label {
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.computed {
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.primary-btn, .secondary-btn {
+  border-radius: 0.65rem;
+  padding: 0.65rem 1.25rem;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+}
+
+.primary-btn {
+  background: var(--primary);
+  color: white;
+}
+
+.primary-btn:focus-visible,
+.secondary-btn:focus-visible {
+  outline: 3px solid var(--primary-light);
+  outline-offset: 2px;
+}
+
+.secondary-btn {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+
+.file-label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.history-list {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.history-empty {
+  text-align: center;
+  padding: 1.5rem;
+  border: 1px dashed var(--border);
+  border-radius: 0.75rem;
+  color: var(--muted);
+}
+
+.history-entry {
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  padding: 0.75rem;
+  background: #f8fafc;
+}
+
+.history-entry summary {
+  font-weight: 600;
+}
+
+.charts {
+  display: grid;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+figure {
+  margin: 0;
+}
+
+figcaption {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  color: var(--muted);
+}
+
+.settings-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.setting-item {
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  padding: 0.75rem;
+  background: #f9fbff;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.setting-item input[type="time"] {
+  padding: 0.6rem 0.75rem;
+  border-radius: 0.6rem;
+  border: 1px solid var(--border);
+  font: inherit;
+}
+
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+}
+
+.guidance {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  padding: 0.75rem;
+  border-radius: 0.75rem;
+  color: #1d4ed8;
+  font-size: 0.9rem;
+}
+
+.toast-container {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: grid;
+  gap: 0.75rem;
+  z-index: 50;
+}
+
+.toast {
+  background: var(--text);
+  color: white;
+  padding: 0.75rem 1.25rem;
+  border-radius: 999px;
+  box-shadow: 0 8px 16px rgba(15, 23, 42, 0.25);
+  font-size: 0.9rem;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: toast-in 200ms ease forwards;
+}
+
+@keyframes toast-in {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (min-width: 768px) {
+  main {
+    padding: 2rem 2.5rem 4rem;
+  }
+
+  section {
+    padding: 1.75rem;
+  }
+
+  .settings-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .charts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .reminder-cards {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
