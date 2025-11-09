@@ -10,8 +10,8 @@ app.use(express.json());
 app.use(express.static('.'));
 
 const openai = new OpenAI({
-  apiKey: process.env.REPLIT_AI_API_KEY || 'dummy-key',
-  baseURL: 'https://api.replit.com/v1/ai/openai'
+  baseURL: process.env.AI_INTEGRATIONS_OPENAI_BASE_URL,
+  apiKey: process.env.AI_INTEGRATIONS_OPENAI_API_KEY
 });
 
 app.post('/api/estimate-calories', async (req, res) => {
