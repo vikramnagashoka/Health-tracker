@@ -150,6 +150,15 @@ function populateLogForm() {
   document.getElementById('mealSnack').value = todayEntry.meals.snack || '';
   document.getElementById('mealDinner').value = todayEntry.meals.dinner || '';
 
+  document.getElementById('servingBreakfast').value = todayEntry.servingSizes?.breakfast || '';
+  document.getElementById('servingLunch').value = todayEntry.servingSizes?.lunch || '';
+  document.getElementById('servingSnack').value = todayEntry.servingSizes?.snack || '';
+  document.getElementById('servingDinner').value = todayEntry.servingSizes?.dinner || '';
+
+  if (todayEntry.calories) {
+    displayCalories(todayEntry.calories);
+  }
+
   document.getElementById('suppD3').checked = Boolean(todayEntry.supplements.d3?.taken);
   document.getElementById('suppD3Time').value = todayEntry.supplements.d3?.time || '';
   document.getElementById('suppOmega3').checked = Boolean(todayEntry.supplements.omega3?.taken);
@@ -221,6 +230,8 @@ function attachEventListeners() {
       showToast('Test notification sent');
     }
   });
+
+  document.getElementById('estimateCalories').addEventListener('click', handleEstimateCalories);
 }
 
 function updateProgress() {
@@ -294,13 +305,19 @@ function collectFormData() {
   const fastingEnd = document.getElementById('fastingEnd').value || '';
   const fastingHours = fastingStart && fastingEnd ? computeFastingHours(fastingStart, fastingEnd) : null;
 
-  return {
+  const data = {
     date: getTodayIso(),
     meals: {
       breakfast: document.getElementById('mealBreakfast').value.trim(),
       lunch: document.getElementById('mealLunch').value.trim(),
       snack: document.getElementById('mealSnack').value.trim(),
       dinner: document.getElementById('mealDinner').value.trim()
+    },
+    servingSizes: {
+      breakfast: document.getElementById('servingBreakfast').value.trim(),
+      lunch: document.getElementById('servingLunch').value.trim(),
+      snack: document.getElementById('servingSnack').value.trim(),
+      dinner: document.getElementById('servingDinner').value.trim()
     },
     supplements: {
       d3: {
@@ -337,6 +354,13 @@ function collectFormData() {
       quality: parseNumber(document.getElementById('sleepQuality').value)
     }
   };
+
+  const todayEntry = state.logs.find((entry) => entry.date === getTodayIso());
+  if (todayEntry?.calories) {
+    data.calories = todayEntry.calories;
+  }
+
+  return data;
 }
 
 function parseNumber(value) {
@@ -738,6 +762,90 @@ function checkIronWarning() {
 function timeToMinutes(time) {
   const [h, m] = time.split(':').map(Number);
   return h * 60 + m;
+}
+
+async function handleEstimateCalories() {
+  const button = document.getElementById('estimateCalories');
+  const meals = {
+    breakfast: {
+      food: document.getElementById('mealBreakfast').value.trim(),
+      servingSize: document.getElementById('servingBreakfast').value.trim()
+    },
+    lunch: {
+      food: document.getElementById('mealLunch').value.trim(),
+      servingSize: document.getElementById('servingLunch').value.trim()
+    },
+    snack: {
+      food: document.getElementById('mealSnack').value.trim(),
+      servingSize: document.getElementById('servingSnack').value.trim()
+    },
+    dinner: {
+      food: document.getElementById('mealDinner').value.trim(),
+      servingSize: document.getElementById('servingDinner').value.trim()
+    }
+  };
+
+  const hasMeals = Object.values(meals).some(m => m.food);
+  if (!hasMeals) {
+    showToast('Please enter at least one meal first');
+    return;
+  }
+
+  button.disabled = true;
+  button.innerHTML = '<span>⏳ Estimating...</span>';
+
+  try {
+    const response = await fetch('/api/estimate-calories', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ meals })
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to estimate calories');
+    }
+
+    const calorieData = await response.json();
+    displayCalories(calorieData);
+
+    const todayEntry = state.logs.find((entry) => entry.date === getTodayIso());
+    if (todayEntry) {
+      todayEntry.calories = calorieData;
+      saveLogs([...state.logs]);
+    }
+
+    showToast('Calories estimated successfully');
+  } catch (error) {
+    console.error('Error estimating calories:', error);
+    showToast('Failed to estimate calories');
+  } finally {
+    button.disabled = false;
+    button.innerHTML = '<span>🔍 Estimate Calories</span>';
+  }
+}
+
+function displayCalories(calorieData) {
+  const meals = ['breakfast', 'lunch', 'snack', 'dinner'];
+  meals.forEach(meal => {
+    const displayEl = document.getElementById(`calories${meal.charAt(0).toUpperCase() + meal.slice(1)}`);
+    const calories = calorieData[meal];
+    if (calories && calories > 0) {
+      displayEl.textContent = `≈ ${calories} cal`;
+      displayEl.hidden = false;
+    } else {
+      displayEl.hidden = true;
+    }
+  });
+
+  const total = calorieData.totalCalories || 0;
+  if (total > 0) {
+    document.getElementById('totalCalories').textContent = total;
+    document.getElementById('calorieSummary').hidden = false;
+  } else {
+    document.getElementById('calorieSummary').hidden = true;
+  }
 }
 
 function setupInstallPrompt() {

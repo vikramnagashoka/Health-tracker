@@ -41,6 +41,8 @@
             <div class="field-grid">
               <label for="mealBreakfast">Breakfast</label>
               <textarea id="mealBreakfast" name="mealBreakfast" rows="2" placeholder="What did you have?"></textarea>
+              <label for="servingBreakfast" class="serving-label">Serving size (optional)</label>
+              <input type="text" id="servingBreakfast" name="servingBreakfast" placeholder="e.g., 1 cup, 200g, 2 slices" />
               <div class="chip-group" data-target="mealBreakfast" aria-label="Breakfast quick add options">
                 <button type="button" class="chip">oats</button>
                 <button type="button" class="chip">ragi</button>
@@ -50,9 +52,12 @@
                 <button type="button" class="chip">salad</button>
                 <button type="button" class="chip">curd</button>
               </div>
+              <div id="caloriesBreakfast" class="calorie-display" hidden></div>
 
               <label for="mealLunch">Lunch</label>
               <textarea id="mealLunch" name="mealLunch" rows="2"></textarea>
+              <label for="servingLunch" class="serving-label">Serving size (optional)</label>
+              <input type="text" id="servingLunch" name="servingLunch" placeholder="e.g., 1 cup, 200g, 2 slices" />
               <div class="chip-group" data-target="mealLunch" aria-label="Lunch quick add options">
                 <button type="button" class="chip">oats</button>
                 <button type="button" class="chip">ragi</button>
@@ -62,9 +67,12 @@
                 <button type="button" class="chip">salad</button>
                 <button type="button" class="chip">curd</button>
               </div>
+              <div id="caloriesLunch" class="calorie-display" hidden></div>
 
               <label for="mealSnack">Snack</label>
               <textarea id="mealSnack" name="mealSnack" rows="2"></textarea>
+              <label for="servingSnack" class="serving-label">Serving size (optional)</label>
+              <input type="text" id="servingSnack" name="servingSnack" placeholder="e.g., 1 cup, 200g, 2 slices" />
               <div class="chip-group" data-target="mealSnack" aria-label="Snack quick add options">
                 <button type="button" class="chip">oats</button>
                 <button type="button" class="chip">ragi</button>
@@ -74,9 +82,12 @@
                 <button type="button" class="chip">salad</button>
                 <button type="button" class="chip">curd</button>
               </div>
+              <div id="caloriesSnack" class="calorie-display" hidden></div>
 
               <label for="mealDinner">Dinner</label>
               <textarea id="mealDinner" name="mealDinner" rows="2"></textarea>
+              <label for="servingDinner" class="serving-label">Serving size (optional)</label>
+              <input type="text" id="servingDinner" name="servingDinner" placeholder="e.g., 1 cup, 200g, 2 slices" />
               <div class="chip-group" data-target="mealDinner" aria-label="Dinner quick add options">
                 <button type="button" class="chip">oats</button>
                 <button type="button" class="chip">ragi</button>
@@ -86,6 +97,16 @@
                 <button type="button" class="chip">salad</button>
                 <button type="button" class="chip">curd</button>
               </div>
+              <div id="caloriesDinner" class="calorie-display" hidden></div>
+
+              <div class="calorie-summary" id="calorieSummary" hidden>
+                <strong>Total Calories:</strong> <span id="totalCalories">0</span> cal
+              </div>
+
+              <button type="button" id="estimateCalories" class="secondary-btn calorie-btn">
+                <span>🔍 Estimate Calories</span>
+              </button>
+
               <div id="ironWarning" class="warning" role="status" hidden>
                 Remember to keep Iron at least 1 hour away from coffee/tea/calcium.
               </div>
