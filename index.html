@@ -1,1 +1,252 @@
-Hello World
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Daily Health Log</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="stylesheet" href="styles.css" />
+  <meta name="theme-color" content="#2a5bff" />
+</head>
+<body>
+  <header class="app-header">
+    <div class="header-text">
+      <h1>Daily Health Log</h1>
+      <p id="currentDate">—</p>
+    </div>
+    <div class="progress-display" aria-live="polite">
+      <span id="progressValue">0%</span>
+      <span class="progress-label">day logged</span>
+    </div>
+    <button id="installBtn" class="secondary-btn" hidden>Install App</button>
+  </header>
+
+  <div id="notificationBanner" class="banner" role="alert" hidden>
+    Notifications are blocked. Enable them in your browser settings to receive reminders.
+  </div>
+
+  <main>
+    <section id="remindersSection" aria-label="Reminder status">
+      <h2>Today&apos;s reminders</h2>
+      <div id="reminderCards" class="reminder-cards"></div>
+      <div id="overdueReminders" class="overdue-cards" hidden aria-live="polite"></div>
+    </section>
+
+    <section id="logSection">
+      <h2>Log today</h2>
+      <form id="logForm">
+        <div class="accordion">
+          <details open>
+            <summary>Meals</summary>
+            <div class="field-grid">
+              <label for="mealBreakfast">Breakfast</label>
+              <textarea id="mealBreakfast" name="mealBreakfast" rows="2" placeholder="What did you have?"></textarea>
+              <div class="chip-group" data-target="mealBreakfast" aria-label="Breakfast quick add options">
+                <button type="button" class="chip">oats</button>
+                <button type="button" class="chip">ragi</button>
+                <button type="button" class="chip">quinoa</button>
+                <button type="button" class="chip">dal</button>
+                <button type="button" class="chip">veggies</button>
+                <button type="button" class="chip">salad</button>
+                <button type="button" class="chip">curd</button>
+              </div>
+
+              <label for="mealLunch">Lunch</label>
+              <textarea id="mealLunch" name="mealLunch" rows="2"></textarea>
+              <div class="chip-group" data-target="mealLunch" aria-label="Lunch quick add options">
+                <button type="button" class="chip">oats</button>
+                <button type="button" class="chip">ragi</button>
+                <button type="button" class="chip">quinoa</button>
+                <button type="button" class="chip">dal</button>
+                <button type="button" class="chip">veggies</button>
+                <button type="button" class="chip">salad</button>
+                <button type="button" class="chip">curd</button>
+              </div>
+
+              <label for="mealSnack">Snack</label>
+              <textarea id="mealSnack" name="mealSnack" rows="2"></textarea>
+              <div class="chip-group" data-target="mealSnack" aria-label="Snack quick add options">
+                <button type="button" class="chip">oats</button>
+                <button type="button" class="chip">ragi</button>
+                <button type="button" class="chip">quinoa</button>
+                <button type="button" class="chip">dal</button>
+                <button type="button" class="chip">veggies</button>
+                <button type="button" class="chip">salad</button>
+                <button type="button" class="chip">curd</button>
+              </div>
+
+              <label for="mealDinner">Dinner</label>
+              <textarea id="mealDinner" name="mealDinner" rows="2"></textarea>
+              <div class="chip-group" data-target="mealDinner" aria-label="Dinner quick add options">
+                <button type="button" class="chip">oats</button>
+                <button type="button" class="chip">ragi</button>
+                <button type="button" class="chip">quinoa</button>
+                <button type="button" class="chip">dal</button>
+                <button type="button" class="chip">veggies</button>
+                <button type="button" class="chip">salad</button>
+                <button type="button" class="chip">curd</button>
+              </div>
+              <div id="ironWarning" class="warning" role="status" hidden>
+                Remember to keep Iron at least 1 hour away from coffee/tea/calcium.
+              </div>
+            </div>
+          </details>
+
+          <details>
+            <summary>Supplements</summary>
+            <div class="supplements">
+              <div class="supplement-item">
+                <label>
+                  <input type="checkbox" id="suppD3" name="suppD3" />
+                  Vitamin D3 5000 IU (Earth Harmony) — AM with fat
+                </label>
+                <label for="suppD3Time" class="time-label">Time</label>
+                <input type="time" id="suppD3Time" name="suppD3Time" />
+              </div>
+              <div class="supplement-item">
+                <label>
+                  <input type="checkbox" id="suppOmega3" name="suppOmega3" />
+                  Omega-3 (Sports Research Vegan) — AM with D3
+                </label>
+                <label for="suppOmega3Time" class="time-label">Time</label>
+                <input type="time" id="suppOmega3Time" name="suppOmega3Time" />
+              </div>
+              <div class="supplement-item">
+                <label>
+                  <input type="checkbox" id="suppIron" name="suppIron" />
+                  Iron 25 mg (Naturelo) — Midday, keep ≥1h away from coffee/tea/calcium
+                </label>
+                <label for="suppIronTime" class="time-label">Time</label>
+                <input type="time" id="suppIronTime" name="suppIronTime" />
+              </div>
+            </div>
+          </details>
+
+          <details>
+            <summary>Fasting</summary>
+            <div class="field-grid">
+              <label for="fastingStart">Start time</label>
+              <input type="time" id="fastingStart" name="fastingStart" />
+              <label for="fastingEnd">End time</label>
+              <input type="time" id="fastingEnd" name="fastingEnd" />
+              <div class="computed" id="fastingHours" aria-live="polite">Fasting hours: —</div>
+            </div>
+          </details>
+
+          <details>
+            <summary>Water</summary>
+            <div class="field-grid">
+              <label for="waterCups">Cups of water</label>
+              <input type="number" id="waterCups" name="waterCups" min="0" inputmode="numeric" />
+            </div>
+          </details>
+
+          <details>
+            <summary>Exercise</summary>
+            <div class="field-grid">
+              <label for="exerciseType">Type</label>
+              <select id="exerciseType" name="exerciseType">
+                <option value="">Select type</option>
+                <option value="walk">Walk</option>
+                <option value="strength">Strength</option>
+                <option value="yoga">Yoga</option>
+                <option value="rest">Rest</option>
+              </select>
+              <label for="exerciseMinutes">Minutes</label>
+              <input type="number" id="exerciseMinutes" name="exerciseMinutes" min="0" inputmode="numeric" />
+            </div>
+          </details>
+
+          <details>
+            <summary>Well-being</summary>
+            <div class="field-grid wellbeing-grid">
+              <label for="energyLevel">Energy (1–5)</label>
+              <input type="number" id="energyLevel" name="energyLevel" min="1" max="5" />
+              <label for="moodLevel">Mood (1–5)</label>
+              <input type="number" id="moodLevel" name="moodLevel" min="1" max="5" />
+              <label for="stressLevel">Stress (1–5)</label>
+              <input type="number" id="stressLevel" name="stressLevel" min="1" max="5" />
+              <label for="wellbeingNotes">Notes</label>
+              <textarea id="wellbeingNotes" name="wellbeingNotes" rows="2"></textarea>
+            </div>
+          </details>
+
+          <details>
+            <summary>Sleep (previous night)</summary>
+            <div class="field-grid">
+              <label for="sleepHours">Hours</label>
+              <input type="number" id="sleepHours" name="sleepHours" min="0" step="0.1" inputmode="decimal" />
+              <label for="sleepQuality">Quality (1–5)</label>
+              <input type="number" id="sleepQuality" name="sleepQuality" min="1" max="5" />
+            </div>
+          </details>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="primary-btn">Save</button>
+          <button type="button" id="clearToday" class="secondary-btn">Clear today</button>
+          <button type="button" id="exportLogs" class="secondary-btn">Export JSON</button>
+          <label for="importLogs" class="secondary-btn file-label">Import JSON</label>
+          <input type="file" id="importLogs" accept="application/json" hidden />
+        </div>
+      </form>
+    </section>
+
+    <section id="historySection">
+      <h2>History &amp; trends</h2>
+      <div id="historyList" class="history-list" aria-live="polite"></div>
+      <div class="charts">
+        <figure>
+          <figcaption>Fasting hours (last 14 days)</figcaption>
+          <canvas id="fastingChart" width="320" height="180" role="img" aria-label="Line chart showing fasting hours"></canvas>
+        </figure>
+        <figure>
+          <figcaption>Energy (1–5) (last 14 days)</figcaption>
+          <canvas id="energyChart" width="320" height="180" role="img" aria-label="Bar chart showing energy levels"></canvas>
+        </figure>
+      </div>
+    </section>
+
+    <section id="settingsSection">
+      <h2>Reminder settings</h2>
+      <p class="guidance">Take D3 + Omega-3 together with a fat-containing meal.<br />Take Iron at midday, away from coffee/tea/calcium.</p>
+      <form id="settingsForm">
+        <div class="settings-grid">
+          <div class="setting-item">
+            <label for="preLunchTime">Pre-lunch check</label>
+            <input type="time" id="preLunchTime" name="preLunchTime" />
+            <label class="toggle">
+              <input type="checkbox" id="preLunchEnabled" />
+              <span>Enable</span>
+            </label>
+          </div>
+          <div class="setting-item">
+            <label for="midAfternoonTime">Mid-afternoon check</label>
+            <input type="time" id="midAfternoonTime" name="midAfternoonTime" />
+            <label class="toggle">
+              <input type="checkbox" id="midAfternoonEnabled" />
+              <span>Enable</span>
+            </label>
+          </div>
+          <div class="setting-item">
+            <label for="dinnerTime">Dinner check</label>
+            <input type="time" id="dinnerTime" name="dinnerTime" />
+            <label class="toggle">
+              <input type="checkbox" id="dinnerEnabled" />
+              <span>Enable</span>
+            </label>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="primary-btn">Save reminders</button>
+          <button type="button" id="testNotification" class="secondary-btn">Test notification</button>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <div id="toastContainer" class="toast-container" aria-live="assertive"></div>
+
+  <script src="app.js" defer></script>
+</body>
+</html>
