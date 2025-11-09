@@ -1,0 +1,4 @@
+products:
+  - name: Sample Product
+    url: sample_product.html
+    selector: .price
